@@ -9,16 +9,12 @@ public class Author {
 
     // Attributes
     private String name;
-    private int age;
-    private String nationality;
 
     /**
      * Constructs a new Author object.
      */
-    public Author(String name, int age, String nationality) {
+    public Author(String name) {
         this.name = name;
-        this.age = age;
-        this.nationality = nationality;
     }
 
     public String getName() {
