@@ -1,18 +1,18 @@
 package fr.ensai.mediaplayer;
 
 import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a song with essential attributes.
  */
-public class Song {
+public class Song extends Media {
     private Artist singer;
-    private String title;
-    private int year;
-    private int duration;
     private String lyrics;
     private Artist author;
     private Artist composer;
+    private List<Genre> genre;
 
     /**
      * Constructs a new Song object.
@@ -25,15 +25,15 @@ public class Song {
      * @param lyrics   The lyrics of the song.
      * @param author   The author of the song.
      * @param composer The composer of the song.
+     * @param genre    The genre of the song.
      */
-    public Song(String title, Artist singer, int year, int duration, String lyrics, Artist author, Artist composer) {
-        this.title = title;
+    public Song(String title, Artist singer, int year, int duration, String lyrics, Artist author, Artist composer, List<Genre> genre) {
+        super(title, duration, year);
         this.singer = singer;
-        this.year = year;
-        this.duration = duration;
         this.lyrics = lyrics;
         this.author = author;
         this.composer = composer;
+        this.genre= genre;
     }
 
     /**
@@ -65,23 +65,9 @@ public class Song {
         return Objects.hash(this.title, this.singer.toString(), this.year);
     }
     
-    public void play() {
-        String word="";
-        int n=this.lyrics.length();
-        for(int i=0; i<n; i++){
-            if (this.lyrics.charAt(i)==' ' || this.lyrics.charAt(i)=='\n'){
-                System.out.println(word);
-                word=" ";
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    System.err.println("Thread was interrupted");
-                }
-            }
-            word= word+ this.lyrics.charAt(i);
-        }
-        
+    @Override
+    public String getText() {
+        return this.lyrics;
     }
 
 }
