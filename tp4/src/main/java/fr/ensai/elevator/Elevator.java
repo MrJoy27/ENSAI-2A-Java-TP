@@ -25,6 +25,7 @@ public class Elevator {
     protected List<Integer> destinationQueue;
     protected List<Person> passengers;
     protected List<Person> lastUnloaded;
+    protected Direction direction;
 
     /**
      * Constructs a new Elevator with the specified parameters.
@@ -40,6 +41,7 @@ public class Elevator {
         this.destinationQueue = new ArrayList<>();
         this.passengers = new ArrayList<>();
         this.lastUnloaded = new ArrayList<>();
+        this.direction = Direction.IDLE; 
     }
 
     public int getId() {
@@ -60,7 +62,10 @@ public class Elevator {
         return this.destinationQueue.contains(floorNumber);
     }
 
-
+    /**
+     * Check is the elevator is at full capacity
+     * @return true if the elevator is full, false otherwise
+     */
     public boolean isFull(){
         return this.capacity <= this.passengers.size();
     }
@@ -129,6 +134,29 @@ public class Elevator {
         this.passengers = remaining;
         return this.lastUnloaded.size();
     }
+    /**
+     * Update the direction of the elevator
+     */
+    public void updateDirection(){
+        if (destinationQueue.size()>0){
+            int destination=destinationQueue.get(0);
+            if (destination>currentFloor) {
+                this.direction=Direction.UP;
+            } 
+            else{
+                if (destination< currentFloor) {
+                    this.direction=Direction.DOWN;
+                }
+                else{
+                    this.direction=Direction.IDLE;
+                }
+            }
+        }
+        else{
+            this.direction=Direction.IDLE;
+        }
+    }
+
 
     /**
      * Loads passengers waiting on the specified floor until the elevator is full.
@@ -151,8 +179,8 @@ public class Elevator {
             this.passengers.add(person);
             this.addDestination(person.getTargetFloor());
         }
+        updateDirection();
     }
-
     /**
      * Moves the elevator to the next floor in its destination queue.
      * Removes that floor from the queue.
@@ -176,6 +204,22 @@ public class Elevator {
         this.passengers=persons;
     }
 
+    /**
+     * Converts direction to String
+     * 
+     */
+    public String displayDirection(){
+        if (this.direction==Direction.UP){
+            return "↑";
+        }
+        if (this.direction==Direction.DOWN){
+            return "↓";
+        }
+        if (this.direction==Direction.IDLE){
+            return "→";
+        }
+        return "";
+    }
     /**
      * Returns a string representation of the elevator at a specific floor,
      * showing passengers inside and last unloaded passengers.

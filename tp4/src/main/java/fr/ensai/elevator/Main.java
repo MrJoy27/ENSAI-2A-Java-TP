@@ -17,9 +17,11 @@ public class Main {
         // --------------------------------------------------------------------
 
         final int elevatorCapacity = Config.getInt("hotel.elevator.capacity");
+        final int crazyElevatorCapacity= Config.getInt("hotel.crazy-elevator.capacity");
         final int nbSteps = Config.getInt("steps.count");
         final int msBetweenSteps = Config.getInt("steps.delay");
         final int nbElevators = Config.getInt("hotel.elevator.number");
+        final int nbCrazyElevators = Config.getInt("hotel.crazy-elevator.number");
         final int nbFloors = Config.getInt("hotel.floor.number");
 
         List<Floor> floors = new ArrayList<>();
@@ -31,7 +33,9 @@ public class Main {
         for (int i=1; i<nbElevators+1; i++){
             elevators.add(new Elevator(i, 0, elevatorCapacity));
         }
-        elevators.add(new CrazyElevator(nbElevators+1, 0,elevatorCapacity));
+        for (int i=1; i<nbCrazyElevators+1; i++){
+            elevators.add(new CrazyElevator(nbElevators+i, 0, crazyElevatorCapacity));
+        }
         Hotel hotel = new Hotel(floors, elevators);
 
         // --------------------------------------------------------------------
