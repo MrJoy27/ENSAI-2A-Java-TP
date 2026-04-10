@@ -14,4 +14,10 @@ public class ElevatorTest {
         elev.fill(0);
         assert(elev.isFull());
     }
+    @Test
+    void addDestinationTest(){
+        Elevator elev=new Elevator(1,0,2);
+        elev.addDestination(1);
+        assert(elev.containDestination(1));
+    }
 }
