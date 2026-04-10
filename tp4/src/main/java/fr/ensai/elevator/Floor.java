@@ -70,15 +70,30 @@ public class Floor {
     }
 
     /**
-     * Press the button to call the first elevator.
-     * Requests the first elevator to stop at this floor.
+     * Press the button to call an elevator.
+     * Requests the least busy elevator if no elevator is coming.
      * 
      * @param elevators the list of elevators available in the hotel
      */
     public void requestElevator(List<Elevator> elevators) {
-        elevators.get(0).addDestination(this.number);
+        boolean inDestinatonList=false;
+        for(int i=0; i<elevators.size(); i++){
+            if (elevators.get(i).isInDestinationQueue(this.number)){
+                inDestinatonList=true;
+            }
+        }
+        if (!inDestinatonList){
+            int minSize=elevators.get(0).getDestinationQueueSize();
+            int minElevator=0;
+            for(int i=1; i<elevators.size(); i++){
+                if (elevators.get(i).getDestinationQueueSize()<minSize){
+                    minSize=elevators.get(i).getDestinationQueueSize();
+                    minElevator=i;
+                }
+            }
+            elevators.get(minElevator).addDestination(this.number);
+        }
     }
-
     /**
      * Displays the current status of this floor in the console, including
      * floor number, elevator contents, and waiting people.

@@ -60,6 +60,11 @@ public class Elevator {
         return this.destinationQueue.contains(floorNumber);
     }
 
+
+    public boolean isFull(){
+        return this.capacity <= this.passengers.size();
+    }
+
     /**
      * Returns the size of the destination queue.
      * 
@@ -79,6 +84,10 @@ public class Elevator {
                 .map(String::valueOf)
                 .reduce((a, b) -> a + ", " + b)
                 .orElse("-");
+    }
+
+    public boolean isInDestinationQueue(int floor){
+        return this.destinationQueue.contains(floor);
     }
 
     /**
@@ -129,7 +138,7 @@ public class Elevator {
      */
     public void loadPassengers(Floor floor) {
 
-        while (this.passengers.size() < this.capacity) {
+        while (!(this.isFull())) {
             Person person = floor.boardNextPerson();
             if (person == null)
                 break;
@@ -151,6 +160,20 @@ public class Elevator {
     public void move() {
         if (!destinationQueue.isEmpty())
             this.currentFloor = destinationQueue.removeFirst();
+    }
+
+    /**
+     * Fills the elevator with passengers from a start floor. 
+     * Method for helping tests.
+     */
+
+    public void fill(int startFloor){
+        List<Person> persons=new ArrayList<>();
+        for (int i=0; i<this.capacity; i++){
+            Person x = new Person(startFloor);
+            persons.add(x);
+        }
+        this.passengers=persons;
     }
 
     /**

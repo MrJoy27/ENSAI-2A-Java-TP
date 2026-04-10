@@ -1,5 +1,6 @@
 package fr.ensai.elevator;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -24,7 +25,7 @@ public class Person {
     public Person(int startFloor) {
         this.nickname = Person.generateNickname();
         this.startFloor = startFloor;
-        this.targetFloor = Person.generateTargetFloor();
+        this.targetFloor = Person.generateTargetFloor(startFloor);
     }
 
     /**
@@ -43,8 +44,13 @@ public class Person {
      * 
      * @return the target floor number
      */
-    private static int generateTargetFloor() {
-        return random.nextInt(4);
+    private static int generateTargetFloor(int startFloor) {
+        final int nbFloors = Config.getInt("hotel.floor.number");
+        int nb=nbFloors+1;
+        while((nb>=nbFloors) || (nb==startFloor)){
+            nb=random.nextInt(nbFloors);
+        }
+        return nb;
     }
 
     public String getNickname() {
